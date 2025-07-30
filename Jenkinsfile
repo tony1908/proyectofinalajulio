@@ -32,7 +32,7 @@ pipeline {
         stage ('Build') {
             steps {
                 script {
-                    image = docker.build(DOCKER_IMAGE, ".")
+                    docker.build(DOCKER_IMAGE, ".")
                 }
             }
         }
@@ -40,6 +40,7 @@ pipeline {
         stage ('Push') {
             steps {
                 script {
+                    image = docker.build(DOCKER_IMAGE, ".")
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS) {
                         image.push()
                     }
