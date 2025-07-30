@@ -13,7 +13,7 @@ public class AppTest {
     public void testHelloWorldEndpoint() {
         Javalin app = App.createApp();
         JavalinTest.test(app, (server, client) -> {
-            assertThat(client.get("/hellox").body().string()).isEqualTo("Hello World");
+            assertThat(client.get("/helloxs").body().string()).isEqualTo("Hello World");
         });
     }
 }
