@@ -8,6 +8,8 @@ pipeline {
         DOCKER_USERNAME = 'toony1908'
         DOCKER_CREDENTIALS = 'docker-hub-credentials'
         DOCKER_IMAGE = "${DOCKER_USERNAME}/${IMAGE_NAME}"
+        EMAIL_FROM = 'tony1908@gmail.com'
+        EMAIL_TO = 'tony1908@gmail.com'
     }
     
     triggers {
@@ -32,7 +34,7 @@ pipeline {
         stage ('Build') {
             steps {
                 script {
-                    docker.build(DOCKER_IMAGE, ".")
+                    image = docker.build(DOCKER_IMAGE, ".")
                 }
             }
         }
@@ -40,7 +42,6 @@ pipeline {
         stage ('Push') {
             steps {
                 script {
-                    image = docker.build(DOCKER_IMAGE, ".")
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS) {
                         image.push()
                     }
@@ -56,6 +57,12 @@ pipeline {
                     sh 'kubectl apply -f k8s/service.yaml'
                 }
             }
+        }
+    }
+
+    post {
+        failure {
+            mail to: EMAIL_TO, from: EMAIL_FROM, subject: "Jenkins build failed", body: "Jenkins build failed"
         }
     }
 }
