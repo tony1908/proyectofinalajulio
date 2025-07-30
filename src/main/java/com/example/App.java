@@ -9,7 +9,7 @@ import io.javalin.Javalin;
 public class App 
 {
     public static Javalin createApp() {
-        return Javalin.create().get("/hello", ctx -> ctx.result("Hello World"));
+        return Javalin.create().get("/hola", ctx -> ctx.result("Hola Mundo"));
     }
 
     public static void main(String[] args) {
